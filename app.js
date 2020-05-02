@@ -3,9 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const {Pool} = require('pg');
+const {
+    Pool
+} = require('pg');
 
 const app = express();
+
+console.log('express app initialized')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -13,7 +17,9 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,13 +30,18 @@ const pool = new Pool({
     database: process.env.QOVERY_DATABASE_MY_POSTGRESQL_3498225_DATABASE,
     password: process.env.QOVERY_DATABASE_MY_POSTGRESQL_3498225_PASSWORD,
     port: process.env.QOVERY_DATABASE_MY_POSTGRESQL_3498225_PORT,
+    connectionString: process.env.QOVERY_DATABASE_MY_DB_CONNECTION_URI,
 });
 
 app.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
+    console.log('Hello from /index')
+    res.render('index', {
+        title: 'Express'
+    });
 });
 
 app.get('/users', function (req, res, next) {
+    console.log('Hello from /users')
     res.send('respond with a resource 2');
 });
 
